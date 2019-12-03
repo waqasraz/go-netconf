@@ -112,7 +112,6 @@ func DialSSH(target string, config *ssh.ClientConfig) (*Session, error) {
 	var t TransportSSH
 	err := t.Dial(target, config)
 	if err != nil {
-		t.Close()
 		return nil, err
 	}
 	return NewSession(&t), nil
@@ -130,7 +129,6 @@ func DialSSHTimeout(target string, config *ssh.ClientConfig, timeout time.Durati
 	conn := &deadlineConn{Conn: bareConn, timeout: timeout}
 	t, err := connToTransport(conn, config)
 	if err != nil {
-		t.Close()
 		return nil, err
 	}
 
